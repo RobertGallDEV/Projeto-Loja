@@ -1,2 +1,1 @@
-# Projeto-Loja
-Projeto de Gerenciamento de estoque e vendas 
+# GerenciamentoEstoque_Vendas

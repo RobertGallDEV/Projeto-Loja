@@ -1,0 +1,51 @@
+.sidebar {
+  width: 125px; 
+  background: #ecf0f1;
+  padding: 10px; 
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease; /* Adiciona uma transição suave */
+}
+
+.sidebar.collapsed {
+  width: 50px; /* Largura reduzida quando colapsada */
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px;
+  margin: 8px 0;
+  text-decoration: none;
+  color: #2c3e50;
+  border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.sidebar.collapsed a {
+  display: none; /* Esconde os links quando colapsado */
+}
+
+.sidebar a:hover {
+  background: #bdc3c7;
+  color: #2c3e50;
+}
+
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  right: -25px;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .toggle-button {
+  right: -20px; /* Ajusta a posição do botão quando colapsado */
+}

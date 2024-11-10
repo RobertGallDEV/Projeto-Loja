@@ -1,0 +1,44 @@
+/* src/styles/Sidebar.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #282c34;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: auto; /* Ajusta a largura automaticamente com base no conteúdo */
+  min-width: 120px; /* Define uma largura mínima */
+  background-color: #f4f4f4;
+  padding: 1rem;
+  position: fixed;
+  height: 100vh; /* Altura total da tela para a sidebar */
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 0.5rem 0;
+}
+
+.sidebar button {
+  width: 100%; /* Faz com que o botão ocupe toda a largura da sidebar */
+  padding: 0.5rem;
+}
+
+.content {
+  margin-left: 130px; /* Ajustado para a largura mínima da sidebar mais algum espaço extra */
+  padding: 1rem;
+}

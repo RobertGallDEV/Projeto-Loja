@@ -1,0 +1,48 @@
+.user-form {
+  padding: 20px;
+  margin-left: 250px;
+  background: #ffffff;
+}
+
+.user-form form {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}
+
+.user-form h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 1.6em;
+  text-align: center;
+}
+
+.user-form input, .user-form select {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.user-form button {
+  background: #3498db;
+  color: #ffffff;
+  border: none;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.1em;
+  transition: background 0.3s;
+}
+
+.user-form button:hover {
+  background: #2980b9;
+}

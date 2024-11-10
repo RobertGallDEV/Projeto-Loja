@@ -1,0 +1,9 @@
+.product-form {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.product-form input, .product-form button {
+  margin: 5px 0;
+}
