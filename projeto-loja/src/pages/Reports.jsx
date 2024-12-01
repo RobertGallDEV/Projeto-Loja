@@ -50,16 +50,21 @@ const Reports = () => {
       <div className="report-details">
         <h3>Relatório da Compra</h3>
         {vendas.length > 0 ? (
-          <>
-            <ul>
+          <div >
               {vendas.map((item, index) => (
-                <li key={index}>
-                  {item.name} - R$ {item.totalVenda.toFixed(2)} - {item.quantidade} unidades
-                </li>
+                
+            <ul key={index} className='report-box'>
+              {item.itens.map((item,index)=>{
+               return <li key={index}>
+               <p style={{fontSize:"20px"}}>{item.produto.nome} - R$ {item.precoUnitario.toFixed(2)} - {item.quantidade} unidades</p>
+                
+          </li>
+              })}
+                
+                  <h3 style={{color:"green", alignSelf:"flex-start", textDecoration:"underline"}}>Total da Compra: R$ {item.totalVenda.toFixed(2)}</h3>
+              </ul>
               ))}
-            </ul>
-            <h3>Total da Compra: R$ {total.toFixed(2)}</h3>
-          </>
+          </div>
         ) : (
           <p>Nenhuma compra foi realizada.</p>
         )}

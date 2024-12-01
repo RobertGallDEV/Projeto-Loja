@@ -13,9 +13,7 @@ const Carrinho = () => {
       {cartItems.length > 0 ? (
         <div className="cart-content">
           <div className="cart-items-container">
-            {cartItems.map((item) => (
-              <CartItem key={item.id} item={item} /> 
-            ))}
+              <CartItem /> 
           </div>
           <CartSummary />
         </div>

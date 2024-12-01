@@ -31,3 +31,14 @@
 .report-details p {
   margin: 5px 0;
 }
+
+.report-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 23px;
+  background-color: white;
+  color: black;
+}
