@@ -3,10 +3,13 @@ package com.devsuperior.gerenciamento.service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.devsuperior.gerenciamento.dto.ProdutoUpdateDTO;
 import com.devsuperior.gerenciamento.entity.Produto;
 import com.devsuperior.gerenciamento.repository.ProdutoRepository;
 
@@ -48,5 +51,26 @@ public class ProdutoService {
         int quantidadeVendida = produto.getQuantidade();
 
         return diasNoEstoque / (quantidadeVendida > 0 ? quantidadeVendida : 1);
+    }
+    
+    public ResponseEntity<String> deletarPorId(Long id){
+    	if (produtoRepository.findById(id).isEmpty()) throw new RuntimeException("Produto não encontrado!");
+    	produtoRepository.deleteById(id);
+    	return ResponseEntity.ok("Produto Deletado com sucesso!") ;
+    }
+    
+    public Produto atualizarProduto(Long id, ProdutoUpdateDTO produto){
+    	Optional<Produto> produtoOld = produtoRepository.findById(id);
+    	if (produtoOld.isEmpty()) throw new RuntimeException("Produto não encontrado!");
+    	if (produto.getNome() != null) {
+    		produtoOld.get().setNome(produto.getNome());
+    	}
+    	if(produto.getPreco() != null) {
+    		produtoOld.get().setPreco(produto.getPreco());
+    	}
+    	if(produto.getQuantidade() != null) {
+    		produtoOld.get().setQuantidade(produto.getQuantidade());
+    	}
+    	return produtoRepository.save(produtoOld.get());
     }
 }

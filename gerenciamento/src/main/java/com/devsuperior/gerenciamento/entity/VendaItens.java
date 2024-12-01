@@ -2,6 +2,10 @@ package com.devsuperior.gerenciamento.entity;
 
 
 
+import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,23 +22,22 @@ public class VendaItens {
 	    @ManyToOne
 	    @JoinColumn(name = "produto_id")
 	    private Produto produto;
-
+	    @JsonManagedReference
 	    @ManyToOne
 	    @JoinColumn(name = "venda_id")
 	    private Vendas venda;
 
 	    private int quantidade;
-	    private double precoUnitario;
+	    private BigDecimal precoUnitario;
 	
 	
 	public VendaItens() {
-		super();
+		
 	}
 
 
-	public VendaItens(Long id, Produto produto, Vendas venda, int quantidade, double precoUnitario) {
+	public VendaItens(Produto produto, Vendas venda, int quantidade, BigDecimal precoUnitario) {
 		super();
-		this.id = id;
 		this.produto = produto;
 		this.venda = venda;
 		this.quantidade = quantidade;
@@ -82,12 +85,12 @@ public class VendaItens {
 	}
 
 
-	public double getPrecoUnitario() {
+	public BigDecimal getPrecoUnitario() {
 		return precoUnitario;
 	}
 
 
-	public void setPrecoUnitario(double precoUnitario) {
+	public void setPrecoUnitario(BigDecimal precoUnitario) {
 		this.precoUnitario = precoUnitario;
 	}
 

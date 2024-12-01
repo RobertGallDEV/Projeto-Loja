@@ -4,12 +4,12 @@ import '../styles/CartItem.css'; // Importando o CSS fornecido
 
 const CartItem = () => {
   const { cartItems, removeFromCart, addToCart } = useCart();
-  const [quantity, setQuantity] = useState({});
+  const [quantidade, setQuantity] = useState({});
 
   // Inicializa as quantidades com base nos itens do carrinho
   useEffect(() => {
     const initialQuantities = cartItems.reduce((acc, item) => {
-      acc[item.id] = item.quantity;
+      acc[item.id] = item.quantidade;
       return acc;
     }, {});
     setQuantity(initialQuantities);
@@ -21,7 +21,7 @@ const CartItem = () => {
       const newQuantity = (prev[id] || 1) + delta;
       if (newQuantity > 0) {
         const updatedItem = cartItems.find(item => item.id === id);
-        addToCart({ ...updatedItem, quantity: newQuantity - updatedItem.quantity }); // Apenas adiciona a diferença de quantidade
+        addToCart({ ...updatedItem, quantidade: newQuantity - updatedItem.quantidade }); // Apenas adiciona a diferença de quantidade
         return { ...prev, [id]: newQuantity };
       } else {
         removeFromCart(id); // Remove o item se a quantidade for zero
@@ -38,11 +38,11 @@ const CartItem = () => {
           <ul>
             {cartItems.map(item => (
               <li key={item.id}>
-                <span>{item.name}</span>
-                <span>R$ {item.price.toFixed(2)}</span>
+                <span>{item.nome}</span>
+                <span>R$ {item.preco.toFixed(2)}</span>
                 <div className="quantity-controls">
                   <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
-                  <span>{quantity[item.id] || item.quantity}</span>
+                  <span>{quantidade[item.id] || item.quantidade}</span>
                   <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
                 </div>
                 <button onClick={() => removeFromCart(item.id)} className="remove-button">Remover</button>

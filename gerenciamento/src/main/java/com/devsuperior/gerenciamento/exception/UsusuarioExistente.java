@@ -2,8 +2,8 @@ package com.devsuperior.gerenciamento.exception;
 
 public class UsusuarioExistente extends Exception {
 
-	public UsusuarioExistente(String mensagem) {
-		System.out.println(mensagem);
+	public UsusuarioExistente(String message) {
+		System.out.println(message);
 	}
 
 	/**

@@ -15,7 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	void deleteByNome(String nome);
 
-	String findByUsuario(String usuario);
+	Optional<Usuario> findByUsuario(String usuario);
 
 	UsuarioCreateDTO save(UsuarioCreateDTO usuarioCreateDTO);
 

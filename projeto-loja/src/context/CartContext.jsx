@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from '../axiosconfig'; 
+import { api } from '../service/api';
 
 const CartContext = createContext();
 
@@ -8,8 +9,9 @@ export const CartProvider = ({ children }) => {
     const savedCart = localStorage.getItem('cartItems');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const [itens, setItens] = useState([])
+  const [quantidade, setQuantidade] = useState([])
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantidade, 0);
 
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -21,7 +23,7 @@ export const CartProvider = ({ children }) => {
       let newItems;
       if (itemIndex > -1) {
         const updatedItems = [...prevItems];
-        updatedItems[itemIndex].quantity += product.quantity;
+        updatedItems[itemIndex].quantidade += product.quantidade;
         newItems = updatedItems;
       } else {
         newItems = [...prevItems, product];
@@ -39,11 +41,40 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
-  const checkoutCart = async () => {
+  function converterItens() {
+    const novosItens = []
+    cartItems.forEach(item => {
+      console.log(item);
+      
+      novosItens.push(item.id)
+      quantidade.push(item.quantidade)
+    });
+    console.log(novosItens);
+    console.log(quantidade);
+    
+    setItens(novosItens)
+  }
+
+  const checkoutCart = async (usuario,subTotal,total) => {
+    converterItens()
+    console.log(itens);
+    
+    const form = {
+      usuarioId:{id:usuario},
+      totalVenda:subTotal,
+      valorPago:total,
+      quantidade:quantidade,
+      itensId:itens
+    }
+    console.log(form);
+    
     try {
-      const response = await axios.post('/vendas', { items: cartItems });
-      console.log('Venda realizada com sucesso:', response.data);
-      clearCart(); // Limpa o carrinho após o sucesso da venda
+      console.log(cartItems);
+      const response = await api.post('/vendas', form);
+      
+      console.log(response);
+      clearCart(); 
+      setQuantidade([])
     } catch (error) {
       console.error('Erro ao realizar a venda:', error);
     }

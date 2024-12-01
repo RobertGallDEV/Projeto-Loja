@@ -1,16 +1,31 @@
 
 import React, { useState } from 'react';
 import '../styles/UserForm.css';
+import { HandleRegister } from '../service/userService';
 
 const UserForm = () => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [role, setRole] = useState('FUNCIONARIO');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Usuário criado: ${name}, ${username}, ${role}`);
+    const registerInfo = {
+      "nome":name,
+      "usuario":username,
+      "senha":password,
+      "confirmaSenha":passwordConfirm,
+      "role":role
+    }
+    try{
+    const response = await HandleRegister(registerInfo)
+    alert(`O usuário: ${name} foi criado com o cargo de: ${role.toLowerCase()}`)
+  }catch(erro){
+    console.log(erro.response);
+    alert(erro?.response?.data?.titulo)
+  }
   };
 
   return (
@@ -34,6 +49,12 @@ const UserForm = () => {
           placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Confirmar Senha"
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
         />
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="FUNCIONARIO">Funcionário</option>

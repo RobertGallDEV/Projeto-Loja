@@ -1,26 +1,48 @@
-import React, { createContext, useState } from 'react';
-
+import React, { createContext, useEffect, useState } from 'react';
+import { HandleLogin } from '../service/userService';
+import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext();
 
-const mockUsers = {
-  gerente: { username: 'gerente', password: '123', role: 'GERENTE' },
-  funcionario: { username: 'funcionario', password: '123', role: 'FUNCIONARIO' },
-};
-
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
 
-  const login = async (username, password) => {
-    const user = mockUsers[username];
-    if (user && user.password === password) {
-      setUser(user);
-      return true;
+  useEffect( ()=>{
+    const recuperado = JSON.parse(localStorage.getItem('usuario'))
+    setUser(recuperado)
+    if(!user){
+      window.location.href = "/login"
     }
-    return false;
+    
+  },[])
+  
+  console.log(user);
+  const login = async (username, password) => {
+    const info = {
+      username: username,
+      senha: password
+    }
+    try{
+    const res = await HandleLogin(info);
+    setUser(res.data)
+      localStorage.setItem('usuario', JSON.stringify(res.data))
+      return true;
+    }catch(err){
+      console.log(err);
+      
+      return err.response.data.titulo
+    }
+    
+ 
   };
 
+  const logout = () =>{
+    localStorage.removeItem('usuario')
+    window.location.href = "/login"
+  }
+
+
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, logout, login }}>
       {children}
     </AuthContext.Provider>
   );  

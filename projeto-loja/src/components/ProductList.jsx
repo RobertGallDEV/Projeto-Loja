@@ -26,7 +26,7 @@ const ProductList = () => {
   );
 
   const handleAddToCart = (product) => {
-    addToCart({ ...product, quantity: 1 });
+    addToCart({ ...product, quantidade: 1 });
   };
 
   return (

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devsuperior.gerenciamento.dto.LoginRequestDTO;
 import com.devsuperior.gerenciamento.dto.UsuarioCreateDTO;
 import com.devsuperior.gerenciamento.dto.UsuarioRequestDTO;
 import com.devsuperior.gerenciamento.exception.ConfirmacaoDeSenha;
@@ -32,6 +33,11 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioRequestDTO> criarUsuario(@RequestBody UsuarioCreateDTO usuario)
 			throws ConfirmacaoDeSenha, UsusuarioExistente {
 		return ResponseEntity.ok(usuarioService.salvar(usuario));
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<UsuarioRequestDTO> login(@RequestBody LoginRequestDTO login){
+		return ResponseEntity.ok(usuarioService.autenticar(login));
 	}
 
 	// fazer a necessidade de estar logado

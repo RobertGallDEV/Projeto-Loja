@@ -47,3 +47,8 @@
 .login-form button:hover {
   background: #2980b9;
 }
+
+.message{
+  color: red;
+  text-align: center;
+}

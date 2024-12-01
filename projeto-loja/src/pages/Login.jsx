@@ -9,14 +9,21 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [message, setMessage] = useState('')
+  const [showMessage, setShowMessage] = useState(false)
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const success = await login(username, password);
-    if (success) {
+    
+    if (success == true) {
       navigate('/products');
     } else {
-      alert('Login falhou');
+      setShowMessage(true)
+      setMessage(success);
+      setInterval(() => {
+        setShowMessage(false)
+      }, 3000);
     }
   };
 
@@ -37,6 +44,10 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Entrar</button>
+      {showMessage && (
+          <p className='message'>{message}</p>
+        )}
+      
       </form>
     </div>
   );

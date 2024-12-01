@@ -3,6 +3,7 @@ package com.devsuperior.gerenciamento.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.devsuperior.gerenciamento.dto.UsuarioCreateDTO;
 import com.devsuperior.gerenciamento.enuns.Role;
 
 import jakarta.persistence.Column;
@@ -45,6 +46,13 @@ public class Usuario implements Serializable {
 		this.estado = estado;
 		this.ultimoLogin = ultimoLogin;
 		this.role = role;
+	}
+	
+	public Usuario(UsuarioCreateDTO dto, String senhaCodificada) {
+		this.nome = dto.getNome();
+		this.usuario = dto.getUsuario();
+		this.senha = senhaCodificada;
+		this.role = dto.getRole();
 	}
 
 	public Usuario() {

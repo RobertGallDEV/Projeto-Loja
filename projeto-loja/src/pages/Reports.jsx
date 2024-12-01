@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom'; 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify'
+import { api } from '../service/api';
 
 const Reports = () => {
   const location = useLocation();
-  const { cartItems = [], total = 0 } = location.state || {};
+  const [vendas, setVendas] = useState([])
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
-  const handleGenerateReport = () => {
+  
+  const handleGenerateReport = async () => {
     if (startDate && endDate) {
-      alert(`Relatório gerado de ${startDate} a ${endDate}`);
+      toast.success(`Relatório gerado de ${startDate} a ${endDate}`);
+      const res = await api.get(`/vendas/periodo/${startDate}/${endDate}`)
+      console.log(res);
+      
+      setVendas(res.data)
+      console.log(vendas);
+      
     } else {
-      alert('Por favor, selecione um período válido.');
+      toast.error('Por favor, selecione um período válido.');
     }
   };
-
+  
   return (
     <div className="reports-container">
       <h2>Relatórios de Compras</h2>
@@ -40,12 +49,12 @@ const Reports = () => {
 
       <div className="report-details">
         <h3>Relatório da Compra</h3>
-        {cartItems.length > 0 ? (
+        {vendas.length > 0 ? (
           <>
             <ul>
-              {cartItems.map((item, index) => (
+              {vendas.map((item, index) => (
                 <li key={index}>
-                  {item.name} - R$ {item.price.toFixed(2)} - {item.quantity} unidades
+                  {item.name} - R$ {item.totalVenda.toFixed(2)} - {item.quantidade} unidades
                 </li>
               ))}
             </ul>
@@ -55,6 +64,7 @@ const Reports = () => {
           <p>Nenhuma compra foi realizada.</p>
         )}
       </div>
+      <ToastContainer/>
     </div>
   );
 };

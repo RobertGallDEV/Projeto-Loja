@@ -11,12 +11,16 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.devsuperior.gerenciamento.dto.LoginRequestDTO;
 import com.devsuperior.gerenciamento.dto.UsuarioCreateDTO;
 import com.devsuperior.gerenciamento.dto.UsuarioRequestDTO;
 import com.devsuperior.gerenciamento.entity.Usuario;
 import com.devsuperior.gerenciamento.exception.ConfirmacaoDeSenha;
+import com.devsuperior.gerenciamento.exception.SenhaInvalidaException;
+import com.devsuperior.gerenciamento.exception.UsuarioNaoEncontradoException;
 import com.devsuperior.gerenciamento.exception.UsusuarioExistente;
 import com.devsuperior.gerenciamento.repository.UsuarioRepository;
 
@@ -25,6 +29,9 @@ public class UsuarioService implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
@@ -41,10 +48,11 @@ public class UsuarioService implements UserDetailsService {
 
 	public UsuarioRequestDTO salvar(UsuarioCreateDTO usuario) throws ConfirmacaoDeSenha, UsusuarioExistente {
 
-		if (usuario.getUsuario() == usuarioRepository.findByUsuario(usuario.getUsuario())) {
-
-			if (usuario.getSenha() == usuario.getConfirmaSenha()) {
-				usuarioRepository.save(usuario);
+		if (!usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent()) {
+				
+			if (!usuario.getSenha().equals(usuario.getConfirmaSenha())) throw new ConfirmacaoDeSenha("As senhas não corresponde.");
+				String senhaCodificada = encoder.encode(usuario.getSenha());
+				usuarioRepository.save(new Usuario(usuario,senhaCodificada));
 
 				UsuarioRequestDTO request = new UsuarioRequestDTO();
 
@@ -54,10 +62,6 @@ public class UsuarioService implements UserDetailsService {
 				request.setUsuario(usuario.getUsuario());
 
 				return request;
-			} else {
-				throw new ConfirmacaoDeSenha("As senhas não corresponde.");
-			}
-
 		} else {
 			throw new UsusuarioExistente("Usuario encontrado no banco, por favor insira outro nome.");
 		}
@@ -171,5 +175,20 @@ public class UsuarioService implements UserDetailsService {
 		}
 
 	}
+	
+	public UsuarioRequestDTO autenticar(LoginRequestDTO login) {
+		   Optional<Usuario> usuario = usuarioRepository.findByUsuario(login.getUsername());
+		   
+		    if (usuario.isPresent() && encoder.matches(login.getSenha(), usuario.get().getSenha())) {
+		    	UsuarioRequestDTO response = new UsuarioRequestDTO(usuario.get());
+		    	response.setAuthenticated(true);
+		    	return response;
+		    }else if (usuario.isPresent() && !encoder.matches(login.getSenha(), usuario.get().getSenha())){
+		    	
+		    	throw new SenhaInvalidaException("Verifique a senha");
+		    }else {
+		    	throw new UsuarioNaoEncontradoException("Usuario não encontrado!");
+		    }
+		}
 
 }
